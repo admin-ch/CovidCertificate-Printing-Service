@@ -54,7 +54,7 @@ jobs:
         with:
           name: Snapshot Release ${{ github.ref }}
           tag: SNAPSHOT
-          artifacts: target/cc-api-gateway-service.jar
+          artifacts: target/cc-printing-service.jar
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           prerelease: false
