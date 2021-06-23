@@ -1,0 +1,26 @@
+jeap:
+  security:
+    oauth2:
+      resourceserver:
+        authorization-server:
+          issuer: "https://identity-a.bit.admin.ch/realms/BAG-CovidCertificate"
+
+cc-printing-service:
+  monitor:
+    prometheus:
+      user: "prometheus"
+      password: ${vcap.services.cc_prometheus.credentials.password}
+  allowed-origin: "https://www.covidcertificate-a.admin.ch"
+  internal:
+    maintenance:
+      user: ${vcap.services.cc_printing_user.credentials.user}
+      password: ${vcap.services.cc_printing_user.credentials.password}
+
+
+
+bbl:
+  sftp:
+    host: ${vcap.services.cc_bbl_sftp.credentials.host}
+    port: 22
+    user: ${vcap.services.cc_bbl_sftp.credentials.user}
+    password: ${vcap.services.cc_bbl_sftp.credentials.password}

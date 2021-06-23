@@ -1,0 +1,3 @@
+CREATE INDEX certificate_print_queue_item_status_created_at_idx ON certificate_print_queue_item (status,created_at);
+
+CREATE INDEX certificate_print_queue_item_status_modified_at_idx ON certificate_print_queue_item (status,modified_at);

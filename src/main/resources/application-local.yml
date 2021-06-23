@@ -1,0 +1,58 @@
+spring:
+  flyway:
+    locations: classpath:db/migration/common
+jeap:
+  security:
+    oauth2:
+      resourceserver:
+        authorization-server:
+          issuer: "http://localhost:8180"
+          jwk-set-uri: "http://localhost:8180/.well-known/jwks.json"
+cc-printing-service:
+  allowed-origin: "http://localhost:4201"
+  monitor:
+    prometheus:
+      user: "prometheus"
+      password: "{noop}secret"
+  service:
+    sleepLogInterval: 1
+  print-queue:
+    schedule: "0 */5 * * * *"
+    cleanup-schedule: "0 */5 * * * *"
+    cleanup-until-number-of-days: 2
+  temp-folder: "./temp/certificates"
+  zip-size: 1000
+  internal:
+    maintenance:
+      user: "user1"
+      password: "{noop}user1Pass"
+
+## Uncomment the following to increase logging; then issue
+## `mvn compile` to copy this configuration under target/
+# server:
+#   tomcat:
+#     basedir: /tmp
+#     accesslog:
+#       enabled: true
+#       directory: /dev
+#       prefix: stdout
+#       buffered: false
+#       suffix:
+#       file-date-format:
+#
+# logging:
+#   level:
+#     org.apache.tomcat: DEBUG
+#     org.apache.catalina: DEBUG
+#     org:
+#       apache:
+#         tomcat: DEBUG
+#         catalina: DEBUG
+
+
+bbl:
+  sftp:
+    host: localhost
+    port: 2222
+    user: foo
+    password: pass

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db-cc-printing:
+    image: postgres
+    ports:
+      - "3122:5432"
+    environment:
+      - POSTGRES_USER=cc-printing
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=cc-printing
+  sftp-cc-printing:
+    image: "emberstack/sftp"
+    ports:
+      - "2222:22"
+    volumes:
+      - ./sftp/config/sftp.json:/app/config/sftp.json:ro
