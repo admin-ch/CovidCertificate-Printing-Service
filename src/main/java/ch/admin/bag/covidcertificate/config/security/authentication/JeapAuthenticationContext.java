@@ -12,7 +12,7 @@ public enum JeapAuthenticationContext {
     private static final String CONTEXT_CLAIM_NAME = "ctx";
 
     public static JeapAuthenticationContext readFromJwt(Jwt jwt) {
-        String context = jwt.getClaimAsString(CONTEXT_CLAIM_NAME);
+        var context = jwt.getClaimAsString(CONTEXT_CLAIM_NAME);
         if(context == null) {
             throw new IllegalArgumentException("Context claim '" + CONTEXT_CLAIM_NAME + "' is missing from the JWT.");
         }

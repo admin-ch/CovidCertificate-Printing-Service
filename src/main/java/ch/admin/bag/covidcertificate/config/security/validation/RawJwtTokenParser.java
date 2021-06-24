@@ -11,8 +11,8 @@ class RawJwtTokenParser {
 
     static JeapAuthenticationContext extractAuthenticationContext(String token) {
         try {
-            JWT jwt = parse(token);
-            String contextClaimValue = jwt.getJWTClaimsSet().getStringClaim(JeapAuthenticationContext.getContextJwtClaimName());
+            var jwt = parse(token);
+            var contextClaimValue = jwt.getJWTClaimsSet().getStringClaim(JeapAuthenticationContext.getContextJwtClaimName());
             return JeapAuthenticationContext.valueOf(contextClaimValue);
         }
         catch (Exception e) {

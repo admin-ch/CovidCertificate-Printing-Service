@@ -10,7 +10,7 @@ public class HttpResponseHeaderFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        var httpServletResponse = (HttpServletResponse) response;
         httpServletResponse.setHeader("Content-Security-Policy", "default-src 'self'");
         httpServletResponse.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
         httpServletResponse.setHeader("Feature-Policy", "microphone 'none'; payment 'none'; camera 'none'");

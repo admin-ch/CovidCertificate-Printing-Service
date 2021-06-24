@@ -18,7 +18,7 @@ class HealthMetricsConfig {
     }
 
     private static int healthToCode(HealthEndpoint ep) {
-        Status status = ep.health().getStatus();
+        var status = ep.health().getStatus();
         return status.equals(Status.UP) ? 1 : 0;
     }
 

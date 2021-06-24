@@ -17,7 +17,7 @@ import java.util.List;
 public class CsvWriterService {
     public void writeRowsToCsv(File file, List<CertificatePrintMetadata> rows)
             throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
-        FileWriter writer = new FileWriter(file);
+        var writer = new FileWriter(file);
         var mappingStrategy = new ColumnPositionMappingStrategy<CertificatePrintMetadata>();
         mappingStrategy.setType(CertificatePrintMetadata.class);
 

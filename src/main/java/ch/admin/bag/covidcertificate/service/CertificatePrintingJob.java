@@ -13,9 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -59,15 +57,14 @@ public class CertificatePrintingJob {
         log.info("End job to send certificates for printing");
     }
 
-    @Transactional
     public List<CertificatePrintQueueItem> sendOverSftpPage(Page<CertificatePrintQueueItem> certificatePrintQueues) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
         if(certificatePrintQueues.isEmpty()){
             return Collections.emptyList();
         }
         log.info("Preparing {} certificates to send for printing", certificatePrintQueues.getSize());
 
-        Path rootPath = fileService.createCertificatesRootDirectory(tempFolder);
-        File zipFile = rootPath.getParent().resolve(rootPath.toFile().getName() + ".zip").toFile();
+        var rootPath = fileService.createCertificatesRootDirectory(tempFolder);
+        var zipFile = rootPath.getParent().resolve(rootPath.toFile().getName() + ".zip").toFile();
         try {
             var successfullyCreatedCertificates = fileService.createPdfFiles(certificatePrintQueues, rootPath);
             fileService.createMetaFile(successfullyCreatedCertificates, rootPath);
