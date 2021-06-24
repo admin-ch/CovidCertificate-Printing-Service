@@ -125,6 +125,6 @@ cc-printing-service:
       schedule: "0 0 23 * * *"
       max-error-count: 3
       cleanup-schedule: "0 0 19 * * *"
-      cleanup-until-number-of-days: 2
+      cleanup-until-number-of-days: 8
     temp-folder: "./temp/certificates"
     zip-size: 500
