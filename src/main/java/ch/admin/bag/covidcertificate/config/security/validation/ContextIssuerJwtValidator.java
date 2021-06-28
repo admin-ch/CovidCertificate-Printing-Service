@@ -24,7 +24,7 @@ public class ContextIssuerJwtValidator implements OAuth2TokenValidator<Jwt> {
     public ContextIssuerJwtValidator(Map<JeapAuthenticationContext, String> contextIssuerMap) {
         Map<JeapAuthenticationContext, OAuth2TokenValidator<Jwt>> hashMap = new EnumMap<>(JeapAuthenticationContext.class);
         for(Map.Entry<JeapAuthenticationContext, String> context : contextIssuerMap.entrySet()) {
-            JwtIssuerValidator validator = new JwtIssuerValidator(context.getValue());
+            var validator = new JwtIssuerValidator(context.getValue());
             hashMap.put(context.getKey(), validator);
         }
         this.contextValidatorMap = Collections.unmodifiableMap(hashMap);
@@ -33,7 +33,7 @@ public class ContextIssuerJwtValidator implements OAuth2TokenValidator<Jwt> {
     @Override
     public OAuth2TokenValidatorResult validate(Jwt jwt) {
         try {
-            JeapAuthenticationContext context = JeapAuthenticationContext.readFromJwt(jwt);
+            var context = JeapAuthenticationContext.readFromJwt(jwt);
             OAuth2TokenValidator<Jwt> contextIssuerJwtValidator = contextValidatorMap.get(context);
             if (contextIssuerJwtValidator != null) {
                 return contextIssuerJwtValidator.validate(jwt);
@@ -47,7 +47,7 @@ public class ContextIssuerJwtValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     private OAuth2TokenValidatorResult createErrorResult(String errorMessage) {
-        OAuth2Error error = new OAuth2Error("invalid_token", errorMessage, null);
+        var error = new OAuth2Error("invalid_token", errorMessage, null);
         log.warn(error.getDescription());
         return OAuth2TokenValidatorResult.failure(error);
     }

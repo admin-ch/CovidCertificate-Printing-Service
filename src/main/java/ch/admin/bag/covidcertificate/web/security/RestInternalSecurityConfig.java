@@ -30,6 +30,7 @@ public class RestInternalSecurityConfig extends WebSecurityConfigurerAdapter {
     private String password;
 
     @Autowired
+    @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser(user)

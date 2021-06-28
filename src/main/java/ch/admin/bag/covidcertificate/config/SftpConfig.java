@@ -31,7 +31,7 @@ public class SftpConfig {
 
     @Bean
     public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() {
-        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
+        var factory = new DefaultSftpSessionFactory(true);
         factory.setHost(sftpServer);
         factory.setPort(sftpPort);
         factory.setUser(sftpUser);
@@ -43,7 +43,7 @@ public class SftpConfig {
     @Bean
     @ServiceActivator(inputChannel = "toSftpChannel")
     public MessageHandler handler() {
-        SftpMessageHandler handler = new SftpMessageHandler(sftpSessionFactory());
+        var handler = new SftpMessageHandler(sftpSessionFactory());
         handler.setRemoteDirectoryExpressionString("headers['remote-target-dir']");
 
         return handler;

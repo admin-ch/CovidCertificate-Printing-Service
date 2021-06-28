@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
@@ -52,6 +51,7 @@ public class CertificatePrintService {
         }
     }
 
+    @Transactional
     public void updateStatus(Collection<CertificatePrintQueueItem> certificatePrintQueueItems, CertificatePrintStatus status){
         log.info("Updating status {} for {} certificates", status.name(), certificatePrintQueueItems.size());
         certificatePrintQueueItems.forEach(it -> {
@@ -64,7 +64,7 @@ public class CertificatePrintService {
     @Transactional
     public void deleteProcessedCertificatesModifiedUntilDate(LocalDateTime dateTime){
         log.info("Deleting certificates processed before {}", dateTime);
-        int deletedRowCount = certificatePrintQueueRepository.deleteItemsProcessedBeforeTimestamp(dateTime);
+        var deletedRowCount = certificatePrintQueueRepository.deleteItemsProcessedBeforeTimestamp(dateTime);
         log.info("Deleted {} certificates", deletedRowCount);
     }
 
@@ -72,7 +72,7 @@ public class CertificatePrintService {
     @Transactional
     public void updateFailedAndResetErrorCount(){
         log.info("Updating failed Certificates and resetting error count");
-        int updatedRowCount = certificatePrintQueueRepository.updateFailedAndResetErrorCount();
+        var updatedRowCount = certificatePrintQueueRepository.updateFailedAndResetErrorCount();
         log.info("Updated {} failed certificates", updatedRowCount);
     }
 }
