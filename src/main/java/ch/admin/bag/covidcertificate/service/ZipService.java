@@ -20,16 +20,16 @@ public class ZipService {
 
     public void zipIt(Path sourceRootPath, File zipFile) throws IOException {
         log.info("Creating Zip file {}", zipFile.getName());
-        byte[] buffer = new byte[1024];
+        var buffer = new byte[1024];
 
-        try (FileOutputStream fos = new FileOutputStream(zipFile);
-             ZipOutputStream zos = new ZipOutputStream(fos)){
+        try (var fos = new FileOutputStream(zipFile);
+             var zos = new ZipOutputStream(fos)){
 
             for (File file: Objects.requireNonNull(sourceRootPath.toFile().listFiles())) {
                 log.info("File Added : {}", file.getName());
-                ZipEntry ze = new ZipEntry(file.getName());
+                var ze = new ZipEntry(file.getName());
                 zos.putNextEntry(ze);
-                try (FileInputStream in = new FileInputStream(file)) {
+                try (var in = new FileInputStream(file)) {
                     int len;
                     while ((len = in .read(buffer)) > 0) {
                         zos.write(buffer, 0, len);

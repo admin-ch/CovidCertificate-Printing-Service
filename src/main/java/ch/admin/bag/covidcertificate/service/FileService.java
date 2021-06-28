@@ -30,7 +30,7 @@ public class FileService {
     private final CertificatePrintMetadataMapper certificatePrintMetadataMapper;
 
     Path createCertificatesRootDirectory(String tempFolder) throws IOException {
-        Path rootPath = Path.of(tempFolder, "certificates_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")));
+        var rootPath = Path.of(tempFolder, "certificates_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")));
         return createdDirectory(rootPath);
     }
 
@@ -73,7 +73,7 @@ public class FileService {
 
     void createMetaFile(List<CertificatePrintQueueItem> certificatePrintQueues, Path rootPath) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
         log.info("Creating metadata csv file");
-        File metaFile = rootPath.resolve(rootPath.getFileName()+".csv").toFile();
+        var metaFile = rootPath.resolve(rootPath.getFileName()+".csv").toFile();
         try {
             csvWriterService.writeRowsToCsv(metaFile, certificatePrintMetadataMapper.mapAll(certificatePrintQueues));
         } catch (IOException| CsvRequiredFieldEmptyException |CsvDataTypeMismatchException| NullPointerException e) {
