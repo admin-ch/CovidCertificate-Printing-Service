@@ -37,7 +37,7 @@ public class CertificatePrintService {
     }
 
     public void increaseErrorCount(Collection<CertificatePrintQueueItem> certificatePrintQueueItems){
-        log.info("Increasing error count for {} certificates", certificatePrintQueueItems.size());
+        log.warn("Increasing error count for {} certificates", certificatePrintQueueItems.size());
         certificatePrintQueueItems.forEach(this::increaseErrorCount);
         certificatePrintQueueRepository.saveAll(certificatePrintQueueItems);
     }
@@ -46,7 +46,7 @@ public class CertificatePrintService {
         certificatePrintQueueItem.setErrorCount(certificatePrintQueueItem.getErrorCount()+1);
         certificatePrintQueueItem.setModifiedAt(LocalDateTime.now());
         if(Objects.equals(certificatePrintQueueItem.getErrorCount(), maxErrorCount)){
-            log.info("Printing certificate {} has failed too many times. Times: {}.", certificatePrintQueueItem.getUvci(), maxErrorCount);
+            log.warn("Printing certificate {} has failed too many times. Times: {}.", certificatePrintQueueItem.getUvci(), maxErrorCount);
             certificatePrintQueueItem.setStatus(CertificatePrintStatus.ERROR.name());
         }
     }
