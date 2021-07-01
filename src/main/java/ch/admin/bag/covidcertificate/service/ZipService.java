@@ -26,7 +26,7 @@ public class ZipService {
              var zos = new ZipOutputStream(fos)){
 
             for (File file: Objects.requireNonNull(sourceRootPath.toFile().listFiles())) {
-                log.info("File Added : {}", file.getName());
+                log.debug("File Added : {}", file.getName());
                 var ze = new ZipEntry(file.getName());
                 zos.putNextEntry(ze);
                 try (var in = new FileInputStream(file)) {
