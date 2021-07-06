@@ -21,7 +21,7 @@ public class CCPrintingServiceApplication {
 
 		Environment env = SpringApplication.run(CCPrintingServiceApplication.class, args).getEnvironment();
 
-		String protocol = "http";
+		var protocol = "http";
 		if (env.getProperty("server.ssl.key-store") != null) {
 			protocol = "https";
 		}

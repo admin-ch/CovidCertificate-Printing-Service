@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
@@ -38,7 +37,7 @@ public class CertificatePrintService {
     }
 
     public void increaseErrorCount(Collection<CertificatePrintQueueItem> certificatePrintQueueItems){
-        log.info("Increasing error count for {} certificates", certificatePrintQueueItems.size());
+        log.warn("Increasing error count for {} certificates", certificatePrintQueueItems.size());
         certificatePrintQueueItems.forEach(this::increaseErrorCount);
         certificatePrintQueueRepository.saveAll(certificatePrintQueueItems);
     }
@@ -47,11 +46,12 @@ public class CertificatePrintService {
         certificatePrintQueueItem.setErrorCount(certificatePrintQueueItem.getErrorCount()+1);
         certificatePrintQueueItem.setModifiedAt(LocalDateTime.now());
         if(Objects.equals(certificatePrintQueueItem.getErrorCount(), maxErrorCount)){
-            log.info("Printing certificate {} has failed too many times. Times: {}.", certificatePrintQueueItem.getUvci(), maxErrorCount);
+            log.warn("Printing certificate {} has failed too many times. Times: {}.", certificatePrintQueueItem.getUvci(), maxErrorCount);
             certificatePrintQueueItem.setStatus(CertificatePrintStatus.ERROR.name());
         }
     }
 
+    @Transactional
     public void updateStatus(Collection<CertificatePrintQueueItem> certificatePrintQueueItems, CertificatePrintStatus status){
         log.info("Updating status {} for {} certificates", status.name(), certificatePrintQueueItems.size());
         certificatePrintQueueItems.forEach(it -> {
@@ -64,7 +64,7 @@ public class CertificatePrintService {
     @Transactional
     public void deleteProcessedCertificatesModifiedUntilDate(LocalDateTime dateTime){
         log.info("Deleting certificates processed before {}", dateTime);
-        int deletedRowCount = certificatePrintQueueRepository.deleteItemsProcessedBeforeTimestamp(dateTime);
+        var deletedRowCount = certificatePrintQueueRepository.deleteItemsProcessedBeforeTimestamp(dateTime);
         log.info("Deleted {} certificates", deletedRowCount);
     }
 
@@ -72,7 +72,7 @@ public class CertificatePrintService {
     @Transactional
     public void updateFailedAndResetErrorCount(){
         log.info("Updating failed Certificates and resetting error count");
-        int updatedRowCount = certificatePrintQueueRepository.updateFailedAndResetErrorCount();
+        var updatedRowCount = certificatePrintQueueRepository.updateFailedAndResetErrorCount();
         log.info("Updated {} failed certificates", updatedRowCount);
     }
 }

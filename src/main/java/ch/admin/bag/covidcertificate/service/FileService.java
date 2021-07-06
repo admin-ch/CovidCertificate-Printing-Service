@@ -30,17 +30,17 @@ public class FileService {
     private final CertificatePrintMetadataMapper certificatePrintMetadataMapper;
 
     Path createCertificatesRootDirectory(String tempFolder) throws IOException {
-        Path rootPath = Path.of(tempFolder, "certificates_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")));
+        var rootPath = Path.of(tempFolder, "certificates_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS")));
         return createdDirectory(rootPath);
     }
 
     private Path createdDirectory(Path rootPath) throws IOException {
         try {
-            log.info("Creating folder {}", rootPath.getFileName());
+            log.info("Creating temp folder {}", rootPath.getFileName());
             rootPath = Files.createDirectories(rootPath).toAbsolutePath();
-            log.info("Created folder {}", rootPath.getFileName());
+            log.info("Created temp folder {}", rootPath.getFileName());
         } catch (IOException e) {
-            log.error("Failed to created folder {}", rootPath.getFileName(), e);
+            log.error("Failed to created temp folder {}", rootPath.getFileName(), e);
             throw e;
         }
         return rootPath;
@@ -73,26 +73,26 @@ public class FileService {
 
     void createMetaFile(List<CertificatePrintQueueItem> certificatePrintQueues, Path rootPath) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
         log.info("Creating metadata csv file");
-        File metaFile = rootPath.resolve(rootPath.getFileName()+".csv").toFile();
+        var metaFile = rootPath.resolve(rootPath.getFileName()+".csv").toFile();
         try {
             csvWriterService.writeRowsToCsv(metaFile, certificatePrintMetadataMapper.mapAll(certificatePrintQueues));
         } catch (IOException| CsvRequiredFieldEmptyException |CsvDataTypeMismatchException| NullPointerException e) {
             log.error("Failed to created meta file {}", metaFile.getName(), e);
             throw e;
         }
-        log.info("Successfully created {} pdf files", certificatePrintQueues.size());
+        log.info("Successfully created metadata csv file");
     }
 
 
 
     void deleteTempData(Path directory, File zipFile) throws IOException {
-        log.info("Deleting folder {} and file {}", directory.getFileName(), zipFile.getName());
+        log.info("Deleting temp folder {} and file {}", directory.getFileName(), zipFile.getName());
         try {
             if(directory.toFile().exists()) {
                 deleteDirectory(directory);
             }
         } catch (IOException e) {
-            log.error("Failed to delete folder{}", directory.getFileName(), e);
+            log.error("Failed to delete temp folder{}", directory.getFileName(), e);
             throw e;
         }
         try {
@@ -103,7 +103,7 @@ public class FileService {
             log.error("Failed to delete file {}", zipFile.getName(), e);
             throw e;
         }
-        log.info("Successfully deleted folder {} and file {}", directory.getFileName(), zipFile.getName());
+        log.info("Successfully deleted temp folder {} and file {}", directory.getFileName(), zipFile.getName());
     }
 
     private void deleteDirectory(Path directoryToBeDeleted) throws IOException {
