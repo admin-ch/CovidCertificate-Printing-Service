@@ -31,7 +31,7 @@ public class ZipService {
                 zos.putNextEntry(ze);
                 try (var in = new FileInputStream(file)) {
                     int len;
-                    while ((len = in .read(buffer)) > 0) {
+                    while ((len = in.read(buffer)) >= 0) {
                         zos.write(buffer, 0, len);
                     }
                 }
