@@ -68,6 +68,7 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQL10Dialect
+                metadata_builder_contributor: ch.admin.bag.covidcertificate.service.SqlFunctionsMetadataBuilderContributor
         show-sql: false
         open-in-view: false
     flyway:
@@ -128,3 +129,5 @@ cc-printing-service:
       cleanup-until-number-of-days: 8
     temp-folder: "./temp/certificates"
     zip-size: 500
+    billing:
+      since-vaccination-date: 2021-07-15

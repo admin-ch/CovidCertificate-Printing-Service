@@ -18,6 +18,7 @@ public class CertificatePrintQueueItemMapper {
                 printCertificateRequestDto.getCity(),
                 printCertificateRequestDto.getLanguage(),
                 printCertificateRequestDto.getCantonCodeSender(),
+                printCertificateRequestDto.getVaccinationDate(),
                 printCertificateRequestDto.getPdfCertificate()
         );
     }

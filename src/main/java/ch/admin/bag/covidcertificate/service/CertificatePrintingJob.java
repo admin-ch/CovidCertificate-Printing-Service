@@ -23,6 +23,7 @@ import java.util.List;
 public class CertificatePrintingJob {
     private final SftpConfig.PrintingServiceSftpGateway gateway;
     private final CertificatePrintService certificatePrintService;
+    private final BillingKpiService billingKpiService;
     private final ZipService zipService;
     private final FileService fileService;
 
@@ -72,6 +73,7 @@ public class CertificatePrintingJob {
             gateway.sendToSftp(zipFile);
             log.info("Successfully sent {} for printing", zipFile.getName());
             certificatePrintService.updateStatus(successfullyCreatedCertificates, CertificatePrintStatus.PROCESSED);
+            billingKpiService.saveBillableCertificates(successfullyCreatedCertificates);
             return successfullyCreatedCertificates;
         }finally {
             fileService.deleteTempData(rootPath, zipFile);

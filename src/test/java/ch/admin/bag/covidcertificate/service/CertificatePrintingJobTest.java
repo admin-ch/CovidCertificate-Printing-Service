@@ -44,6 +44,8 @@ class CertificatePrintingJobTest {
     @Mock
     private CertificatePrintService certificatePrintService;
     @Mock
+    private BillingKpiService billingKpiService;
+    @Mock
     private ZipService zipService;
     @Mock
     private FileService fileService;

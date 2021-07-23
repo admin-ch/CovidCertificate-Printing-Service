@@ -1,0 +1,32 @@
+package ch.admin.bag.covidcertificate.domain;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "billing_kpi")
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA
+@AllArgsConstructor
+@Getter
+@Slf4j
+public class BillingKpi {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    private String cantonCodeSender;
+
+    private LocalDateTime processedAt;
+
+    public BillingKpi(String cantonCodeSender, LocalDateTime processedAt){
+        this.cantonCodeSender = cantonCodeSender;
+        this.processedAt = processedAt;
+    }
+}
