@@ -15,7 +15,7 @@ public class BillingKpiMapper {
         return  certificatePrintQueueItems.stream().map(BillingKpiMapper::map).collect(Collectors.toList());
     }
 
-    public static BillingKpi map(CertificatePrintQueueItem certificatePrintQueueItem){
+    private static BillingKpi map(CertificatePrintQueueItem certificatePrintQueueItem){
         return new BillingKpi(
                 certificatePrintQueueItem.getCantonCodeSender(),
                 certificatePrintQueueItem.getUvci(),
