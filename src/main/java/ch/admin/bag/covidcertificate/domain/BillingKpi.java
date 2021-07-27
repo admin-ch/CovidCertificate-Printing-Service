@@ -23,10 +23,13 @@ public class BillingKpi {
 
     private String cantonCodeSender;
 
+    private String uvci;
+
     private LocalDateTime processedAt;
 
-    public BillingKpi(String cantonCodeSender, LocalDateTime processedAt){
+    public BillingKpi(String cantonCodeSender, String uvci, LocalDateTime processedAt){
         this.cantonCodeSender = cantonCodeSender;
+        this.uvci = uvci;
         this.processedAt = processedAt;
     }
 }

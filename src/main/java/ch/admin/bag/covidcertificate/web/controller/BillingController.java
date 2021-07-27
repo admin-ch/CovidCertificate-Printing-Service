@@ -1,7 +1,5 @@
 package ch.admin.bag.covidcertificate.web.controller;
 
-import ch.admin.bag.covidcertificate.domain.BillingKpiRepository;
-import ch.admin.bag.covidcertificate.service.BillingCsvWriterService;
 import ch.admin.bag.covidcertificate.service.BillingKpiService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -20,14 +18,12 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Slf4j
 public class BillingController {
-    private final BillingKpiRepository billingKpiRepository;
     private final BillingKpiService billingKpiService;
-    private final BillingCsvWriterService billingCsvWriterService;
 
     @GetMapping(value = "/{processedAtSince}", produces = "text/csv")
     public ResponseEntity getBillingInformation(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtSince,
-            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil ) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
         var filename = "billing.csv";
         var billingResource = billingKpiService.getBillingInformation(processedAtSince, processedAtUntil, filename);
 

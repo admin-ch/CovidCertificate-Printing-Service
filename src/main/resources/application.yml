@@ -129,5 +129,3 @@ cc-printing-service:
       cleanup-until-number-of-days: 8
     temp-folder: "./temp/certificates"
     zip-size: 500
-    billing:
-      since-vaccination-date: 2021-07-15
