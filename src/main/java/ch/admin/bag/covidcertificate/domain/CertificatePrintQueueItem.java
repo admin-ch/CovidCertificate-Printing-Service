@@ -37,6 +37,7 @@ public class CertificatePrintQueueItem {
     private String city;
     private String language;
     private String cantonCodeSender;
+    private Boolean isBillable;
     @Setter
     private Integer errorCount;
 
@@ -54,7 +55,7 @@ public class CertificatePrintQueueItem {
 
     public CertificatePrintQueueItem(String uvci, String status,
                                      String addressLine1, String addressLine2, Integer zipCode, String city,
-                                     String language, String cantonCodeSender, byte[] pdfData) {
+                                     String language, String cantonCodeSender, Boolean isBillable, byte[] pdfData) {
         this.uvci = uvci;
         this.status = status;
         this.addressLine1 = addressLine1;
@@ -63,6 +64,9 @@ public class CertificatePrintQueueItem {
         this.city = city;
         this.language = language;
         this.cantonCodeSender = cantonCodeSender;
+        this.isBillable = isBillable;
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
         this.errorCount = 0;
         this.certificatePdfData = new CertificatePdfData(pdfData, this);
     }
