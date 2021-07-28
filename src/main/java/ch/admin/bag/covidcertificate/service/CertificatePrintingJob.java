@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -32,6 +33,8 @@ public class CertificatePrintingJob {
 
     @Value("${cc-printing-service.zip-size}")
     private Integer zipSize;
+    @Value("${cc-printing-service.print-queue.max-error-count}")
+    private int maxAllowedErrorCount;
 
     @Async
     public void sendOverSftpAsync(){
@@ -48,8 +51,8 @@ public class CertificatePrintingJob {
                 var successfullySentCertificates = sendOverSftpPage(certificatePrintQueues);
                 log.info("Successfully sent {} certificates for printing", successfullySentCertificates.size());
             } catch (CsvRequiredFieldEmptyException| CsvDataTypeMismatchException| IOException| RuntimeException e) {
-                log.error("Failed to send certificates for printing", e);
                 certificatePrintService.increaseErrorCount(certificatePrintQueues.getContent());
+                logProcessingFailed(certificatePrintQueues, e);
             }
             certificatePrintQueues = certificatePrintService.getNotProcessedItems(createdBeforeTimestamp, zipSize);
         }
@@ -77,6 +80,17 @@ public class CertificatePrintingJob {
             return successfullyCreatedCertificates;
         }finally {
             fileService.deleteTempData(rootPath, zipFile);
+        }
+    }
+
+    private void logProcessingFailed(Page<CertificatePrintQueueItem> certificatePrintQueues, Exception e){
+        var logMessage = "Failed to send certificates for printing";
+        var maxErrorCount = certificatePrintQueues.getContent().stream().map(CertificatePrintQueueItem::getErrorCount).max(Comparator.comparingInt(it -> it)).orElse(0);
+        if(maxErrorCount >= maxAllowedErrorCount){
+            log.error(logMessage+" "+maxErrorCount+" times.", e);
+        }else{
+            log.warn(logMessage, e);
+
         }
     }
 }
