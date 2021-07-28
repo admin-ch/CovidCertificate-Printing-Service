@@ -208,6 +208,16 @@ class CertificatePrintingJobTest {
                 verify(certificatePrintService, times(1)).updateStatus(successfullyCertificates, CertificatePrintStatus.PROCESSED);
             }
 
+            @Test
+            void shouldBillSuccessfullyProcessedCertificates() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+                var successfullyProcessedCertificates = createPage().getContent();
+                when(fileService.createPdfFiles(any(), any())).thenReturn(successfullyProcessedCertificates);
+
+                certificatePrintingJob.sendOverSftpPage(createPage());
+
+                verify(billingKpiService, times(1)).saveBillableCertificates(successfullyProcessedCertificates);
+            }
+
 
             @Test
             void shouldDeleteTempFolder() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
