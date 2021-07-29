@@ -44,6 +44,8 @@ class CertificatePrintingJobTest {
     @Mock
     private CertificatePrintService certificatePrintService;
     @Mock
+    private BillingKpiService billingKpiService;
+    @Mock
     private ZipService zipService;
     @Mock
     private FileService fileService;
@@ -204,6 +206,16 @@ class CertificatePrintingJobTest {
                 certificatePrintingJob.sendOverSftpPage(createPage());
 
                 verify(certificatePrintService, times(1)).updateStatus(successfullyCertificates, CertificatePrintStatus.PROCESSED);
+            }
+
+            @Test
+            void shouldBillSuccessfullyProcessedCertificates() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+                var successfullyProcessedCertificates = createPage().getContent();
+                when(fileService.createPdfFiles(any(), any())).thenReturn(successfullyProcessedCertificates);
+
+                certificatePrintingJob.sendOverSftpPage(createPage());
+
+                verify(billingKpiService, times(1)).saveBillableCertificates(successfullyProcessedCertificates);
             }
 
 

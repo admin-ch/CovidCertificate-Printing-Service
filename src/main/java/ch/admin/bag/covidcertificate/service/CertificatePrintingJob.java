@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -23,6 +24,7 @@ import java.util.List;
 public class CertificatePrintingJob {
     private final SftpConfig.PrintingServiceSftpGateway gateway;
     private final CertificatePrintService certificatePrintService;
+    private final BillingKpiService billingKpiService;
     private final ZipService zipService;
     private final FileService fileService;
 
@@ -31,6 +33,8 @@ public class CertificatePrintingJob {
 
     @Value("${cc-printing-service.zip-size}")
     private Integer zipSize;
+    @Value("${cc-printing-service.print-queue.max-error-count}")
+    private int maxAllowedErrorCount;
 
     @Async
     public void sendOverSftpAsync(){
@@ -47,8 +51,8 @@ public class CertificatePrintingJob {
                 var successfullySentCertificates = sendOverSftpPage(certificatePrintQueues);
                 log.info("Successfully sent {} certificates for printing", successfullySentCertificates.size());
             } catch (CsvRequiredFieldEmptyException| CsvDataTypeMismatchException| IOException| RuntimeException e) {
-                log.error("Failed to send certificates for printing", e);
                 certificatePrintService.increaseErrorCount(certificatePrintQueues.getContent());
+                logProcessingFailed(certificatePrintQueues, e);
             }
             certificatePrintQueues = certificatePrintService.getNotProcessedItems(createdBeforeTimestamp, zipSize);
         }
@@ -65,16 +69,28 @@ public class CertificatePrintingJob {
         var rootPath = fileService.createCertificatesRootDirectory(tempFolder);
         var zipFile = rootPath.getParent().resolve(rootPath.toFile().getName() + ".zip").toFile();
         try {
-            var successfullyCreatedCertificates = fileService.createPdfFiles(certificatePrintQueues, rootPath);
-            fileService.createMetaFile(successfullyCreatedCertificates, rootPath);
+            var successfullyProcessedCertificates = fileService.createPdfFiles(certificatePrintQueues, rootPath);
+            fileService.createMetaFile(successfullyProcessedCertificates, rootPath);
             zipService.zipIt(rootPath, zipFile);
             log.info("Sending {} for printing", zipFile.getName());
             gateway.sendToSftp(zipFile);
             log.info("Successfully sent {} for printing", zipFile.getName());
-            certificatePrintService.updateStatus(successfullyCreatedCertificates, CertificatePrintStatus.PROCESSED);
-            return successfullyCreatedCertificates;
+            certificatePrintService.updateStatus(successfullyProcessedCertificates, CertificatePrintStatus.PROCESSED);
+            billingKpiService.saveBillableCertificates(successfullyProcessedCertificates);
+            return successfullyProcessedCertificates;
         }finally {
             fileService.deleteTempData(rootPath, zipFile);
+        }
+    }
+
+    private void logProcessingFailed(Page<CertificatePrintQueueItem> certificatePrintQueues, Exception e){
+        var logMessage = "Failed to send certificates for printing";
+        var maxErrorCount = certificatePrintQueues.getContent().stream().map(CertificatePrintQueueItem::getErrorCount).max(Comparator.comparingInt(it -> it)).orElse(0);
+        if(maxErrorCount >= maxAllowedErrorCount){
+            log.error(logMessage+" "+maxErrorCount+" times.", e);
+        }else{
+            log.warn(logMessage, e);
+
         }
     }
 }
