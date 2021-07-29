@@ -69,15 +69,15 @@ public class CertificatePrintingJob {
         var rootPath = fileService.createCertificatesRootDirectory(tempFolder);
         var zipFile = rootPath.getParent().resolve(rootPath.toFile().getName() + ".zip").toFile();
         try {
-            var successfullyCreatedCertificates = fileService.createPdfFiles(certificatePrintQueues, rootPath);
-            fileService.createMetaFile(successfullyCreatedCertificates, rootPath);
+            var successfullyProcessedCertificates = fileService.createPdfFiles(certificatePrintQueues, rootPath);
+            fileService.createMetaFile(successfullyProcessedCertificates, rootPath);
             zipService.zipIt(rootPath, zipFile);
             log.info("Sending {} for printing", zipFile.getName());
             gateway.sendToSftp(zipFile);
             log.info("Successfully sent {} for printing", zipFile.getName());
-            certificatePrintService.updateStatus(successfullyCreatedCertificates, CertificatePrintStatus.PROCESSED);
-            billingKpiService.saveBillableCertificates(successfullyCreatedCertificates);
-            return successfullyCreatedCertificates;
+            certificatePrintService.updateStatus(successfullyProcessedCertificates, CertificatePrintStatus.PROCESSED);
+            billingKpiService.saveBillableCertificates(successfullyProcessedCertificates);
+            return successfullyProcessedCertificates;
         }finally {
             fileService.deleteTempData(rootPath, zipFile);
         }
