@@ -16,6 +16,6 @@ public class AppController {
     @GetMapping(value = "/ping")
     public @ResponseBody
     String hello() {
-        return "Hello from CH Covid Certificate Management Service";
+        return "Hello from CH Covid Certificate Printing Service";
     }
 }
