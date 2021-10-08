@@ -29,9 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.requestMatchers().
-                antMatchers("/actuator/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").
-                and().
-                authorizeRequests().anyRequest().permitAll();
+                antMatchers("/actuator/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+                            "/api/v1/ping").
+                    and().
+                    authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean
