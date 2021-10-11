@@ -18,7 +18,7 @@ public class AudienceJwtValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     public OAuth2TokenValidatorResult validate(Jwt jwt) {
-        if(jwt.getAudience() == null || jwt.getAudience().isEmpty()) {
+        if (jwt.getAudience() == null) {
             //If audience is missing this means token is valid for every system
             return OAuth2TokenValidatorResult.success();
         }
