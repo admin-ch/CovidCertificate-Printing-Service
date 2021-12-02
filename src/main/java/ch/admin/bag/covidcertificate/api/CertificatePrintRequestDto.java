@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @ToString
@@ -18,6 +17,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CertificatePrintRequestDto {
+    private static final int PDF_SIZE_50KB = 50000;
+    private static final int PDF_SIZE_250KB = 250000;
+
     @NotNull
     private byte[] pdfCertificate;
 
@@ -33,10 +35,7 @@ public class CertificatePrintRequestDto {
     private Boolean isBillable;
 
     public void validate(){
-        final int _50KB = 50000;
-        final int _250KB = 250000;
-
-        if(pdfCertificate.length<_50KB || pdfCertificate.length>_250KB){
+        if(pdfCertificate.length< PDF_SIZE_50KB || pdfCertificate.length> PDF_SIZE_250KB){
             throw new InputValidationException(
                     new InputValidationError(
                             this.getClass(),
