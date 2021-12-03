@@ -35,7 +35,7 @@ public class CertificatePrintRequestDto {
     private Boolean isBillable;
 
     public void validate(){
-        if(pdfCertificate.length< PDF_SIZE_50KB || pdfCertificate.length> PDF_SIZE_250KB){
+        if(pdfCertificate.length < PDF_SIZE_50KB || pdfCertificate.length > PDF_SIZE_250KB){
             throw new InputValidationException(
                     new InputValidationError(
                             this.getClass(),
