@@ -2,13 +2,12 @@ package ch.admin.bag.covidcertificate.api;
 
 import ch.admin.bag.covidcertificate.api.error.InputValidationException;
 import com.flextrade.jfixture.JFixture;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.test.util.ReflectionTestUtils;
 
+import static ch.admin.bag.covidcertificate.FixtureCustomization.customizeCertificatePrintRequestDto;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -40,10 +39,8 @@ class CertificatePrintRequestDtoTest {
         }
 
         private CertificatePrintRequestDto createCertificatePrintRequestDto(int pdfSize){
-            var certificatePrintRequestDto = fixture.create(CertificatePrintRequestDto.class);
-            var pdfCertificate = ArrayUtils.toPrimitive(fixture.collections().createCollection(byte.class, pdfSize).toArray(new Byte[pdfSize]));
-            ReflectionTestUtils.setField(certificatePrintRequestDto, "pdfCertificate", pdfCertificate);
-            return certificatePrintRequestDto;
+            customizeCertificatePrintRequestDto(fixture, pdfSize);
+            return fixture.create(CertificatePrintRequestDto.class);
         }
     }
 
