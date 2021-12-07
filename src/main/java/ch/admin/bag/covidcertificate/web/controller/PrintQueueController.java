@@ -25,6 +25,7 @@ public class PrintQueueController {
     @PostMapping
     @PreAuthorize("hasRole('bag-cc-certificatecreator')")
     public ResponseEntity<HttpStatus> print(@Valid @RequestBody CertificatePrintRequestDto certificatePrintRequestDto) {
+        certificatePrintRequestDto.validate();
         log.info("Adding certificate with uvci {} to the print queue", certificatePrintRequestDto.getUvci());
         certificatePrintService.saveCertificateInPrintQueue(CertificatePrintQueueItemMapper.create(certificatePrintRequestDto));
         log.info("Successfully added Certificate {} for printing", certificatePrintRequestDto.getUvci());

@@ -25,6 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
 import java.util.stream.Stream;
+
+import static ch.admin.bag.covidcertificate.FixtureCustomization.customizeCertificatePrintRequestDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
@@ -49,6 +51,7 @@ class PrintQueueControllerTest {
 
     @BeforeEach
     void setupMocks() {
+        customizeCertificatePrintRequestDto(fixture, 100000);
         this.mockMvc = standaloneSetup(controller, new ResponseStatusExceptionHandler()).build();
         lenient().doNothing().when(certificatePrintService).saveCertificateInPrintQueue(any(CertificatePrintQueueItem.class));
     }

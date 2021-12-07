@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.time.LocalDateTime;
 
+import static ch.admin.bag.covidcertificate.FixtureCustomization.customizeCertificatePrintRequestDto;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
@@ -72,6 +73,7 @@ class PrintQueueControllerSecurityTest {
 
     @BeforeEach
     void setupMocks() {
+        customizeCertificatePrintRequestDto(fixture, 100000);
         lenient().doNothing().when(certificatePrintService).saveCertificateInPrintQueue(any(CertificatePrintQueueItem.class));
     }
 
