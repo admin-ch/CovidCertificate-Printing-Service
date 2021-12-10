@@ -17,8 +17,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CertificatePrintRequestDto {
-    private static final int PDF_SIZE_50KB = 50000;
-    private static final int PDF_SIZE_250KB = 250000;
+    private static final int KILOBYTE = 1024;
+    private static final int PDF_SIZE_50KB = 50*KILOBYTE;
+    private static final int PDF_SIZE_250KB = 250*KILOBYTE;
 
     @NotNull
     private byte[] pdfCertificate;
@@ -40,7 +41,7 @@ public class CertificatePrintRequestDto {
                     new InputValidationError(
                             this.getClass(),
                             "pdfCertificate",
-                            "pdf size should be between 50 and 250 KB. Given pdf is "+pdfCertificate.length/1000+"KB."
+                            "pdf size should be between 50 and 250 KB. Given pdf is "+pdfCertificate.length/1024+"KB."
                     ));
         }
     }
