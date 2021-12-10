@@ -41,7 +41,7 @@ public class CertificatePrintRequestDto {
                     new InputValidationError(
                             this.getClass(),
                             "pdfCertificate",
-                            "pdf size should be between 50 and 250 KB. Given pdf is "+pdfCertificate.length/1024+"KB."
+                            "pdf size should be between 50 and 250 KB. Given pdf is "+pdfCertificate.length/KILOBYTE+"KB."
                     ));
         }
     }
