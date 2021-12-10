@@ -25,13 +25,13 @@ class CertificatePrintRequestDtoTest {
 
         @Test
         void throwsExceptionIfPDFSizeIsMoreThan250KB() {
-            var certificatePrintRequestDto = createCertificatePrintRequestDto(250001);
+            var certificatePrintRequestDto = createCertificatePrintRequestDto(250*1024+1);
 
             assertThrows(InputValidationException.class, certificatePrintRequestDto::validate);
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {50000, 100000, 250000})
+        @ValueSource(ints = {50*1024, 100000, 250*1024})
         void doesNotThrowExceptionIfPDFSizeIsBetween50KBand250KB(int pdfSize) {
             var certificatePrintRequestDto = createCertificatePrintRequestDto(pdfSize);
 
