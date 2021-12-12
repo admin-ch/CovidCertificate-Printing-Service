@@ -5,27 +5,33 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.6</version>
+		<version>2.6.1</version>
 		<relativePath/>
 	</parent>
 	<groupId>ch.admin.bag.covidcertificate</groupId>
 	<artifactId>cc-printing-service</artifactId>
-	<version>2.4.0</version>
+	<version>3.0.2</version>
 	<name>cc-printing-service</name>
 	<description>Service for printing Covid Certificates</description>
 
 	<properties>
 		<java.version>11</java.version>
 
-		<spring-cloud.version>2020.0.3</spring-cloud.version>
-		<logstash.version>5.2</logstash.version>
-		<janino.version>2.6.1</janino.version>
-		<cc-backend-logging.version>1.0.0</cc-backend-logging.version>
-		<guava.version>24.1-jre</guava.version>
-		<springdoc.version>1.3.6</springdoc.version>
-		<jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+		<cc-backend-logging.version>1.0.1</cc-backend-logging.version>
+		<com.github.tomakehurst.version>2.16.0</com.github.tomakehurst.version>
+		<guava.version>31.0.1-jre</guava.version>
+		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<janino.version>3.1.6</janino.version>
+		<jfixture-mockito.version>2.7.2</jfixture-mockito.version>
+		<jjwt.version>0.11.2</jjwt.version>
+		<logstash.version>6.6</logstash.version>
+		<net.therore.logback.version>1.0.0</net.therore.logback.version>
+		<org.mockito.mockito-inline.version>3.8.0</org.mockito.mockito-inline.version>
+		<spring-cloud.version>2020.0.4</spring-cloud.version>
+		<springdoc.version>1.5.13</springdoc.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<log4j2.version>2.15.0</log4j2.version>
 
 		<sonar.exclusions>
 			**/org/**/*.java,**/com/**/*.java,**/config/security/**/*.java
@@ -186,18 +192,18 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.11.1</version>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.1</version>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.1</version>
+			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -232,13 +238,13 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
-			<version>3.8.0</version>
+			<version>${org.mockito.mockito-inline.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.flextrade.jfixture</groupId>
 			<artifactId>jfixture-mockito</artifactId>
-			<version>2.7.2</version>
+			<version>${jfixture-mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -249,13 +255,13 @@
 		<dependency>
 			<groupId>net.therore.logback</groupId>
 			<artifactId>therore-logback</artifactId>
-			<version>1.0.0</version>
+			<version>${net.therore.logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock-standalone</artifactId>
-			<version>2.16.0</version>
+			<version>${com.github.tomakehurst.version}</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>

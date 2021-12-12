@@ -92,7 +92,7 @@ class MaintenanceControllerTest {
         void shouldDeleteAllCertificatesBeforeSpecifiedDate() throws Exception {
             var timestamp = fixture.create(LocalDateTime.class);
 
-            mockMvc.perform(get(URL+timestamp.toString())).andExpect(status().isOk());
+            mockMvc.perform(get(URL+timestamp.truncatedTo(ChronoUnit.SECONDS).toString())).andExpect(status().isOk());
 
             verify(certificatePrintService).deleteProcessedCertificatesModifiedUntilDate(timestamp.truncatedTo(ChronoUnit.SECONDS));
         }
