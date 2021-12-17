@@ -52,7 +52,8 @@ class BillingKpiServiceTest {
 
                 billingKpiService.saveBillableCertificates(certificates);
 
-                billingKpiMapperMock.verify(times(1), () -> BillingKpiMapper.mapAll(any()));
+                // ToDo does no longer compile, find another solution
+                //billingKpiMapperMock.verify(times(1), () -> BillingKpiMapper.mapAll(any()));
                 billingKpiMapperMock.verify(() -> BillingKpiMapper.mapAll(billableCertificates));
             }
         }
