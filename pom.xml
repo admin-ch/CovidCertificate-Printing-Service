@@ -10,14 +10,14 @@
 	</parent>
 	<groupId>ch.admin.bag.covidcertificate</groupId>
 	<artifactId>cc-printing-service</artifactId>
-	<version>3.5.1</version>
+	<version>3.7.0</version>
 	<name>cc-printing-service</name>
 	<description>Service for printing Covid Certificates</description>
 
 	<properties>
 		<java.version>11</java.version>
 
-		<cc-backend-logging.version>1.0.2</cc-backend-logging.version>
+		<cc-backend-logging.version>1.0.3</cc-backend-logging.version>
 		<com.github.tomakehurst.version>2.16.0</com.github.tomakehurst.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
