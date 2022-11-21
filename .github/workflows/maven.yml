@@ -1,7 +1,8 @@
 name: Build, test and analyze
 
 on:
-  push:
+ workflow_dispatch:
+ push:
     branches: 
       - 'release/**'
     tags:        
