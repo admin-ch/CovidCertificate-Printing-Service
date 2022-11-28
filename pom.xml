@@ -29,6 +29,7 @@
 		<org.mockito.version>4.8.0</org.mockito.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
 		<springdoc.version>1.6.11</springdoc.version>
+		<java-cfenv-boot.version>2.4.0</java-cfenv-boot.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<log4j2.version>2.18.0</log4j2.version>
@@ -96,6 +97,23 @@
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-sftp</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.pivotal.cfenv</groupId>
+			<artifactId>java-cfenv-boot</artifactId>
+			<version>${java-cfenv-boot.version}</version>
+			<exclusions>
+				<!-- Avoid versions from java-cfenv-boot / java-cfenv-jdbc leaking into starters -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
 		<dependency>
