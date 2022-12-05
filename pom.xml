@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ch.admin.bag.covidcertificate</groupId>
 	<artifactId>cc-printing-service</artifactId>
-	<version>4.9.1</version>
+	<version>4.9.2</version>
 	<name>cc-printing-service</name>
 	<description>Service for printing Covid Certificates</description>
 
@@ -19,17 +19,17 @@
 
 		<cc-backend-logging.version>1.0.4</cc-backend-logging.version>
 		<com.github.tomakehurst.version>2.27.2</com.github.tomakehurst.version>
-		<guava.version>31.0.1-jre</guava.version>
+		<guava.version>31.1-jre</guava.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-		<janino.version>3.1.8</janino.version>
+		<janino.version>3.1.9</janino.version>
 		<jfixture-mockito.version>2.7.2</jfixture-mockito.version>
 		<jjwt.version>0.11.5</jjwt.version>
 		<logstash.version>7.2</logstash.version>
 		<net.therore.logback.version>1.0.0</net.therore.logback.version>
 		<org.mockito.version>4.8.0</org.mockito.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
-		<springdoc.version>1.6.11</springdoc.version>
-		<java-cfenv-boot.version>2.4.0</java-cfenv-boot.version>
+		<springdoc.version>1.6.13</springdoc.version>
+		<java-cfenv-boot.version>2.4.1</java-cfenv-boot.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<log4j2.version>2.18.0</log4j2.version>

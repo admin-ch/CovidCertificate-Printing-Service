@@ -60,8 +60,9 @@ spring:
         username: cc-printing
         password: secret
         hikari:
-            maximum-pool-size: 10
-            pool-name: hikari-cp-${spring.application.name}
+          maximum-pool-size: 10
+          minimum-idle: 2
+          pool-name: hikari-cp-${spring.application.name}
     jpa:
         hibernate:
             ddl-auto: validate
