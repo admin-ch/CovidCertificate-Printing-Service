@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,7 +26,7 @@ public class BillingKpiService {
     public void saveBillableCertificates(Collection<CertificatePrintQueueItem> certificatePrintQueueItems){
         var billableCertificates = certificatePrintQueueItems.stream()
                 .filter(item -> item.getIsBillable() != null && item.getIsBillable())
-                .collect(Collectors.toList());
+                .toList();
             billingKpiRepository.saveAll(BillingKpiMapper.mapAll(billableCertificates));
     }
 

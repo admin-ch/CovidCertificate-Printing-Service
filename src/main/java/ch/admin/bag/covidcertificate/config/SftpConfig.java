@@ -88,7 +88,7 @@ public class SftpConfig {
 
             @Override
             public void showMessage(String s) {
-
+                // Do nothing because our sftp client is silent.
             }
         });
         return new CachingSessionFactory<>(factory);

@@ -1,6 +1,10 @@
 package ch.admin.bag.covidcertificate.service;
 
-import ch.admin.bag.covidcertificate.domain.*;
+import ch.admin.bag.covidcertificate.domain.AggregatedBillingKpi;
+import ch.admin.bag.covidcertificate.domain.BillingKpi;
+import ch.admin.bag.covidcertificate.domain.BillingKpiMapper;
+import ch.admin.bag.covidcertificate.domain.BillingKpiRepository;
+import ch.admin.bag.covidcertificate.domain.CertificatePrintQueueItem;
 import com.flextrade.jfixture.JFixture;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -18,12 +22,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BillingKpiServiceTest {

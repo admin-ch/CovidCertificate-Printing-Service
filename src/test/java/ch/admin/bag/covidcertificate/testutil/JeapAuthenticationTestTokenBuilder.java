@@ -4,7 +4,11 @@ import ch.admin.bag.covidcertificate.config.security.authentication.JeapAuthenti
 import ch.admin.bag.covidcertificate.config.security.authentication.JeapAuthenticationToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 // @jEAP team: This builder does not follow the same conventions as the Lombok builders usually used by jEAP.
 // -> when breaking changes are introduced, adapt this builder to the Lombok style. See also JwsBuilder.
