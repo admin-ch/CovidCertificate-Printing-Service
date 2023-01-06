@@ -38,8 +38,7 @@ class JeapAuthenticationTokenTest {
 
     @Test
     void testEquals_true() {
-        assertThat(this.testEe).isNotNull();
-        assertThat(this.testEe).isEqualTo(this.testEe);
+        assertThat(this.testEe).isNotNull().isEqualTo(this.testEe);
     }
 
     @Test
