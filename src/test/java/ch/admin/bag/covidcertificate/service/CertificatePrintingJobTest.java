@@ -222,7 +222,7 @@ class CertificatePrintingJobTest {
 
                 certificatePrintingJob.sendOverSftpPage(createPage());
 
-                verify(billingKpiService, times(1)).saveBillableCertificates(successfullyProcessedCertificates);
+                verify(billingKpiService, times(1)).saveKpiOfProcessedCertificates(successfullyProcessedCertificates);
             }
 
 

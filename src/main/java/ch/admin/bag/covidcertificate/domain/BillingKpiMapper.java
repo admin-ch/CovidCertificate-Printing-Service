@@ -18,8 +18,8 @@ public class BillingKpiMapper {
         return new BillingKpi(
                 certificatePrintQueueItem.getCantonCodeSender(),
                 certificatePrintQueueItem.getUvci(),
-                certificatePrintQueueItem.getModifiedAt()
+                certificatePrintQueueItem.getModifiedAt(),
+                certificatePrintQueueItem.getIsBillable()
         );
     }
-
 }

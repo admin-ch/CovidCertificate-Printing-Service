@@ -27,7 +27,7 @@ public class MaintenanceController {
     @GetMapping("print")
     public ResponseEntity<HttpStatus> print(@RequestParam(required = false) boolean retryFailed) {
         log.info("Starting sending certificates with status {} for printing", CertificatePrintStatus.CREATED.name());
-        if(retryFailed){
+        if (retryFailed) {
             certificatePrintService.updateFailedAndResetErrorCount();
         }
         certificatePrintingJob.sendOverSftpAsync();

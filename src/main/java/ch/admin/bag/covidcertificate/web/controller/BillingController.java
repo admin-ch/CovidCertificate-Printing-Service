@@ -27,12 +27,14 @@ public class BillingController {
     @GetMapping(value = "/{processedAtSince}", produces = "text/csv")
     public ResponseEntity getBillingInformation(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtSince,
-            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil)
+            throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+
         var filename = "billing.csv";
         var billingResource = billingKpiService.getBillingInformation(processedAtSince, processedAtUntil, filename);
 
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename="+filename)
+                .header("Content-Disposition", "attachment; filename=" + filename)
                 .contentLength(billingResource.contentLength())
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(billingResource);
