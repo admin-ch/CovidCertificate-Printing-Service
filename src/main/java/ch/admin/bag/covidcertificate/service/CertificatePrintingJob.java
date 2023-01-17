@@ -76,7 +76,7 @@ public class CertificatePrintingJob {
             gateway.sendToSftp(zipFile);
             log.info("Successfully sent {} for printing", zipFile.getName());
             certificatePrintService.updateStatus(successfullyProcessedCertificates, CertificatePrintStatus.PROCESSED);
-            billingKpiService.saveBillableCertificates(successfullyProcessedCertificates);
+            billingKpiService.saveKpiOfProcessedCertificates(successfullyProcessedCertificates);
             return successfullyProcessedCertificates;
         }finally {
             fileService.deleteTempData(rootPath, zipFile);

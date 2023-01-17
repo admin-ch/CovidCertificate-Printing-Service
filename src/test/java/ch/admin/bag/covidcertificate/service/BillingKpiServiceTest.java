@@ -42,9 +42,10 @@ class BillingKpiServiceTest {
     private final JFixture fixture = new JFixture();
 
     @Nested
-    class SaveBillableCertificates{
+    class SaveBillableCertificates {
         @Test
-        void shouldOnlyMapBillableCertificatesToBillingKpis(){
+        void shouldSaveMappedBillingKpis() {
+            // when
             var billableCertificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
             billableCertificates.forEach(certificate -> ReflectionTestUtils.setField(certificate, "isBillable", true));
             var nonBillableCertificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
@@ -52,29 +53,14 @@ class BillingKpiServiceTest {
             var certificates = new ArrayList<>(billableCertificates);
             certificates.addAll(nonBillableCertificates);
 
-            try (MockedStatic<BillingKpiMapper> billingKpiMapperMock = Mockito.mockStatic(BillingKpiMapper.class)) {
-                billingKpiMapperMock.when(() -> BillingKpiMapper.mapAll(any())).thenReturn(fixture.collections().createCollection(BillingKpi.class));
-
-                billingKpiService.saveBillableCertificates(certificates);
-
-                // ToDo does no longer compile, find another solution
-                //billingKpiMapperMock.verify(times(1), () -> BillingKpiMapper.mapAll(any()));
-                billingKpiMapperMock.verify(() -> BillingKpiMapper.mapAll(billableCertificates));
-            }
-        }
-
-        @Test
-        void shouldSaveMappedBillingKpis(){
-            var certificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
-            certificates.forEach(certificate -> ReflectionTestUtils.setField(certificate, "isBillable", true));
             var billingKpiList = fixture.collections().createCollection(BillingKpi.class);
 
             try (MockedStatic<BillingKpiMapper> billingKpiMapperMock = Mockito.mockStatic(BillingKpiMapper.class)) {
                 billingKpiMapperMock.when(() -> BillingKpiMapper.mapAll(any())).thenReturn(billingKpiList);
 
-                billingKpiService.saveBillableCertificates(certificates);
+                billingKpiService.saveKpiOfProcessedCertificates(certificates);
 
-
+                billingKpiMapperMock.verify(() -> BillingKpiMapper.mapAll(certificates));
                 verify(billingKpiRepository).saveAll(billingKpiList);
             }
         }
@@ -134,5 +120,4 @@ class BillingKpiServiceTest {
             assertEquals(fileName, actual.getFile().getName());
         }
     }
-
 }
