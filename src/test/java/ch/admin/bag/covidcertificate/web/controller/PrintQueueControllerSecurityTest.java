@@ -54,7 +54,7 @@ class PrintQueueControllerSecurityTest {
     private static final JFixture fixture = new JFixture();
 
     private static final String URL = "/api/v1/print";
-    private static final String VALID_USER_ROLE = "bag-cc-certificatecreator";
+    private static final String VALID_USER_ROLE = "bag-cc-print-cert";
     private static final String INVALID_USER_ROLE = "invalid-role";
     // Avoid port 8180, which is likely used by the local KeyCloak:
     private static final int MOCK_SERVER_PORT = 8182;
