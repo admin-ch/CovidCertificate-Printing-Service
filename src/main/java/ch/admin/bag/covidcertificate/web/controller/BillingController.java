@@ -8,7 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,15 +27,16 @@ public class BillingController {
     @GetMapping(value = "/{processedAtSince}", produces = "text/csv")
     public ResponseEntity getBillingInformation(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtSince,
-            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+            @RequestParam(name = "until", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processedAtUntil)
+            throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+
         var filename = "billing.csv";
         var billingResource = billingKpiService.getBillingInformation(processedAtSince, processedAtUntil, filename);
 
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename="+filename)
+                .header("Content-Disposition", "attachment; filename=" + filename)
                 .contentLength(billingResource.contentLength())
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(billingResource);
-
     }
 }

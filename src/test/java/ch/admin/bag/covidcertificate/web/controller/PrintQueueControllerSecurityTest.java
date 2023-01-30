@@ -11,7 +11,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.flextrade.jfixture.JFixture;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -63,7 +67,7 @@ class PrintQueueControllerSecurityTest {
     private static final WireMockServer wireMockServer = new WireMockServer(options().port(MOCK_SERVER_PORT));
 
     @BeforeAll
-    private static void setup() throws Exception {
+    static void setup() throws Exception {
         wireMockServer.start();
         wireMockServer.stubFor(WireMock.get(urlPathEqualTo("/.well-known/jwks.json")).willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
@@ -115,15 +119,11 @@ class PrintQueueControllerSecurityTest {
     }
 
     private ResultMatcher getResultMatcher(HttpStatus status) {
-        switch(status) {
-            case CREATED:
-                return status().isCreated();
-            case FORBIDDEN:
-                return status().isForbidden();
-            case UNAUTHORIZED:
-                return status().isUnauthorized();
-            default:
-                throw new IllegalArgumentException("HttpStatus not found!");
-        }
+        return switch (status) {
+            case CREATED -> status().isCreated();
+            case FORBIDDEN -> status().isForbidden();
+            case UNAUTHORIZED -> status().isUnauthorized();
+            default -> throw new IllegalArgumentException("HttpStatus not found!");
+        };
     }
 }

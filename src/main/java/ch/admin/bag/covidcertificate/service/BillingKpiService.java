@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,19 +23,18 @@ public class BillingKpiService {
     private final BillingKpiRepository billingKpiRepository;
     private final BillingCsvWriterService billingCsvWriterService;
 
-    public void saveBillableCertificates(Collection<CertificatePrintQueueItem> certificatePrintQueueItems){
-        var billableCertificates = certificatePrintQueueItems.stream()
-                .filter(item -> item.getIsBillable() != null && item.getIsBillable())
-                .collect(Collectors.toList());
-            billingKpiRepository.saveAll(BillingKpiMapper.mapAll(billableCertificates));
+    public void saveKpiOfProcessedCertificates(Collection<CertificatePrintQueueItem> certificatePrintQueueItems) {
+        billingKpiRepository.saveAll(BillingKpiMapper.mapAll(certificatePrintQueueItems));
     }
 
-    public FileSystemResource getBillingInformation(LocalDate processedAtSince, LocalDate processedAtUntil, String billingFilename) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+    public FileSystemResource getBillingInformation(
+            LocalDate processedAtSince, LocalDate processedAtUntil, String billingFilename)
+            throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+
         var until = processedAtUntil == null? LocalDateTime.now() : processedAtUntil.atStartOfDay();
         var billingFile = new File(billingFilename);
         var billingData = billingKpiRepository.getBillingInformation(processedAtSince.atStartOfDay(), until);
         billingCsvWriterService.writeRowsToCsv(billingFile, billingData);
         return new FileSystemResource(billingFile);
-
     }
 }

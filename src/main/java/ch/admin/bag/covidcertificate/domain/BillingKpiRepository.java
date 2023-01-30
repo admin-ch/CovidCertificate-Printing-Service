@@ -17,6 +17,7 @@ public interface BillingKpiRepository extends JpaRepository<BillingKpi, UUID>, J
             "FROM BillingKpi billingKpi " +
             "WHERE billingKpi.processedAt >= :processedAtSince " +
             "AND billingKpi.processedAt < :processedAtUntil " +
+            "AND billingKpi.isBillable = true " +
             "GROUP BY billingKpi.cantonCodeSender, date_trunc(billingKpi.processedAt)" )
     List<AggregatedBillingKpi> getBillingInformation(
             @Param("processedAtSince") LocalDateTime processedAtSince,

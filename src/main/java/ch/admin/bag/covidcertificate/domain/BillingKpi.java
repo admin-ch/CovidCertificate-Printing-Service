@@ -1,19 +1,21 @@
 package ch.admin.bag.covidcertificate.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "billing_kpi")
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA
-@AllArgsConstructor
 @Getter
 @Slf4j
 public class BillingKpi {
@@ -27,9 +29,12 @@ public class BillingKpi {
 
     private LocalDateTime processedAt;
 
-    public BillingKpi(String cantonCodeSender, String uvci, LocalDateTime processedAt){
+    private Boolean isBillable;
+
+    public BillingKpi(String cantonCodeSender, String uvci, LocalDateTime processedAt, Boolean isBillable){
         this.cantonCodeSender = cantonCodeSender;
         this.uvci = uvci;
         this.processedAt = processedAt;
+        this.isBillable = isBillable;
     }
 }

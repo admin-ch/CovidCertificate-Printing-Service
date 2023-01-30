@@ -36,7 +36,7 @@ public class CertificatePrintMetadataMapper {
     public List<CertificatePrintMetadata> mapAll(Collection<CertificatePrintQueueItem> certificatePrintQueueItems){
         return certificatePrintQueueItems.stream()
                 .map(this::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private CertificatePrintMetadata map(CertificatePrintQueueItem certificatePrintQueueItem){

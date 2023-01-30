@@ -1,6 +1,10 @@
 package ch.admin.bag.covidcertificate.service;
 
-import ch.admin.bag.covidcertificate.domain.*;
+import ch.admin.bag.covidcertificate.domain.AggregatedBillingKpi;
+import ch.admin.bag.covidcertificate.domain.BillingKpi;
+import ch.admin.bag.covidcertificate.domain.BillingKpiMapper;
+import ch.admin.bag.covidcertificate.domain.BillingKpiRepository;
+import ch.admin.bag.covidcertificate.domain.CertificatePrintQueueItem;
 import com.flextrade.jfixture.JFixture;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -18,12 +22,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BillingKpiServiceTest {
@@ -37,9 +42,10 @@ class BillingKpiServiceTest {
     private final JFixture fixture = new JFixture();
 
     @Nested
-    class SaveBillableCertificates{
+    class SaveBillableCertificates {
         @Test
-        void shouldOnlyMapBillableCertificatesToBillingKpis(){
+        void shouldSaveMappedBillingKpis() {
+            // when
             var billableCertificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
             billableCertificates.forEach(certificate -> ReflectionTestUtils.setField(certificate, "isBillable", true));
             var nonBillableCertificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
@@ -47,29 +53,14 @@ class BillingKpiServiceTest {
             var certificates = new ArrayList<>(billableCertificates);
             certificates.addAll(nonBillableCertificates);
 
-            try (MockedStatic<BillingKpiMapper> billingKpiMapperMock = Mockito.mockStatic(BillingKpiMapper.class)) {
-                billingKpiMapperMock.when(() -> BillingKpiMapper.mapAll(any())).thenReturn(fixture.collections().createCollection(BillingKpi.class));
-
-                billingKpiService.saveBillableCertificates(certificates);
-
-                // ToDo does no longer compile, find another solution
-                //billingKpiMapperMock.verify(times(1), () -> BillingKpiMapper.mapAll(any()));
-                billingKpiMapperMock.verify(() -> BillingKpiMapper.mapAll(billableCertificates));
-            }
-        }
-
-        @Test
-        void shouldSaveMappedBillingKpis(){
-            var certificates = fixture.collections().createCollection(CertificatePrintQueueItem.class);
-            certificates.forEach(certificate -> ReflectionTestUtils.setField(certificate, "isBillable", true));
             var billingKpiList = fixture.collections().createCollection(BillingKpi.class);
 
             try (MockedStatic<BillingKpiMapper> billingKpiMapperMock = Mockito.mockStatic(BillingKpiMapper.class)) {
                 billingKpiMapperMock.when(() -> BillingKpiMapper.mapAll(any())).thenReturn(billingKpiList);
 
-                billingKpiService.saveBillableCertificates(certificates);
+                billingKpiService.saveKpiOfProcessedCertificates(certificates);
 
-
+                billingKpiMapperMock.verify(() -> BillingKpiMapper.mapAll(certificates));
                 verify(billingKpiRepository).saveAll(billingKpiList);
             }
         }
@@ -129,5 +120,4 @@ class BillingKpiServiceTest {
             assertEquals(fileName, actual.getFile().getName());
         }
     }
-
 }

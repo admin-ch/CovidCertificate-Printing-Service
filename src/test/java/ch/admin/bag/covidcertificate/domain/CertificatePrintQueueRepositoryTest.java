@@ -19,11 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest(properties = {
         "spring.jpa.hibernate.ddl-auto=create",
@@ -45,18 +42,18 @@ class CertificatePrintQueueRepositoryTest {
 
     private final JFixture fixture = new JFixture();
 
-//    @Nested
-//    class GetNotProcessedItems {
-//        @Test
-//        @Transactional
-//        void shouldReturnEmptyPage_whenNoUnprocessedItemsInTheDB() {
-//            persist(CertificatePrintStatus.PROCESSED);
-//            Pageable p = PageRequest.of(0,20);
-//            Page<CertificatePrintQueueItem> result = repository.getNotProcessedItems(LocalDateTime.now().plusYears(10), p);
-//
-//            assertThat(result).isEmpty();
-//        }
-//
+    @Nested
+    class GetNotProcessedItems {
+        @Test
+        @Transactional
+        void shouldReturnEmptyPage_whenNoUnprocessedItemsInTheDB() {
+            persist(CertificatePrintStatus.PROCESSED);
+            Pageable p = PageRequest.of(0,20);
+            Page<CertificatePrintQueueItem> result = repository.getNotProcessedItems(LocalDateTime.now().plusYears(10), p);
+
+            assertThat(result).isEmpty();
+        }
+
 //        @Test
 //        @Transactional
 //        void shouldReturnRequestedPage_whenUnprocessedItemsExistInTheDB() {
@@ -70,7 +67,7 @@ class CertificatePrintQueueRepositoryTest {
 //            assertEquals(pageSize,resultPage1.toList().size());
 //            assertEquals(10,resultPage2.toList().size());
 //        }
-//
+
 //        @Test
 //        @Transactional
 //        void shouldLoadItemCorrectly_whenUnprocessedItemsExistInTheDB() {
@@ -81,16 +78,15 @@ class CertificatePrintQueueRepositoryTest {
 //            assertEquals(1, result.toList().size());
 //            assertEquals(expected, result.getContent().get(0));
 //        }
-//    }
-
-
-    private List<CertificatePrintQueueItem> persist(CertificatePrintStatus status, int numberOfItems) {
-        List<CertificatePrintQueueItem> items = new ArrayList<>();
-        for(int i=0; i < numberOfItems; i++){
-            items.add(persist(status));
-        }
-        return items;
     }
+
+//    private List<CertificatePrintQueueItem> persist(CertificatePrintStatus status, int numberOfItems) {
+//        List<CertificatePrintQueueItem> items = new ArrayList<>();
+//        for(int i=0; i < numberOfItems; i++){
+//            items.add(persist(status));
+//        }
+//        return items;
+//    }
 
     private CertificatePrintQueueItem persist(CertificatePrintStatus status) {
         CertificatePrintQueueItem certificatePrintQueueItem = fixture.create(CertificatePrintQueueItem.class);
